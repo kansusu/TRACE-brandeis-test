@@ -1,7 +1,8 @@
 import os
+import warnings
 from pathlib import Path
-import pandas as pd
 
+import pandas as pd
 from mmdemo_azure_kinect import DeviceType, create_azure_kinect_features
 
 from mmdemo.demo import Demo
@@ -16,13 +17,13 @@ from mmdemo.features import (
     Log,
     Move,
     Object,
+    Planner,
     Proposition,
     RecordedAudio,
     SaveVideo,
     SelectedObjects,
     VADUtteranceBuilder,
     WhisperTranscription,
-    Planner,
 )
 from mmdemo.features.wtd_ablation_testing import (
     GestureSelectedObjectsGroundTruth,
@@ -30,26 +31,26 @@ from mmdemo.features.wtd_ablation_testing import (
     create_transcription_and_audio_ground_truth_features,
 )
 
-import warnings
-
 # Suppress all warnings
 warnings.filterwarnings("ignore")
 
 # mkv path for WTD group
-WTD_MKV_PATH = (
-    "D:/Weights_Task/Data/Fib_weights_original_videos/Group_{0:02}-master.mkv"
-)
+WTD_MKV_PATH = "D:/Demo_Data/Group_02-master.mkv"
 
 # audio path for WTD group
-WTD_AUDIO_PATH = "D:/Weights_Task/Data/Group_{0:02}-audio.wav"
+WTD_AUDIO_PATH = "D:/Demo_Data/Group_02-audio.wav"
 
 # ground truth path for WTD group. These can be generated with
 # scripts/wtd_annotations/create_all_wtd_inputs.py
 WTD_GROUND_TRUTH_DIR = "wtd_inputs/group{0}"
 
 # paths to models not trained on the current group
-WTD_MOVE_MODEL_PATH = "D:/brady_wtd_eval_models/move_classifier_{0:02}.pt"
-WTD_PROP_MODEL_PATH = "D:/brady_wtd_eval_models/steroid_model_g{0}"
+WTD_MOVE_MODEL_PATH = (
+    "C:/Development/TRACE/mmdemo/features/move/production_move_classifier.pt"
+)
+WTD_PROP_MODEL_PATH = (
+    "C:/Development/TRACE/mmdemo/features/proposition/data/prop_extraction_model"
+)
 
 # The number of seconds of the recording to process
 WTD_END_TIMES = {
@@ -156,7 +157,9 @@ def create_demo(
 
     plan = Planner(cgt)
 
-    output_frame = EMNLPFrame(color, gaze, gesture, selected_objects, cgt, calibration, plan)
+    output_frame = EMNLPFrame(
+        color, gaze, gesture, selected_objects, cgt, calibration, plan
+    )
 
     return Demo(
         targets=[
@@ -192,7 +195,6 @@ def add_audio_to_video(video, audio, output):
 
 
 if __name__ == "__main__":
-
     group = 1
     output_frame_path = Path(f"output_frames_group{group}.mp4")
     final_video_path = Path(f"final_group{group}.mp4")
@@ -213,9 +215,9 @@ if __name__ == "__main__":
     # add audio to output frames
     converted_audio_path = Path(f"audio_converted_group{group}.wav")
     backup_audio_path = Path(f"wtd_inputs/group{group}/chunks/full_recording.wav")
-    audio_to_add = converted_audio_path if converted_audio_path.is_file() else backup_audio_path
-    add_audio_to_video(
-        output_frame_path, audio_to_add, final_video_path
+    audio_to_add = (
+        converted_audio_path if converted_audio_path.is_file() else backup_audio_path
     )
+    add_audio_to_video(output_frame_path, audio_to_add, final_video_path)
 
     demo.print_time_benchmarks()
