@@ -13,12 +13,12 @@ from mmdemo.features import (
     MicAudio,
     Move,
     Object,
+    Planner,
     Proposition,
     SaveVideo,
     SelectedObjects,
     VADUtteranceBuilder,
     WhisperTranscription,
-    Planner,
 )
 
 if __name__ == "__main__":
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     selected_objects = SelectedObjects(objects, gesture)  # pyright: ignore
 
     # transcriptions from microphone
-    audio = MicAudio(device_id=6, speaker_id="group")
+    audio = MicAudio(device_id=1, speaker_id="group")
     utterance_audio = VADUtteranceBuilder(audio, delete_input_files=True)
     transcriptions = WhisperTranscription(utterance_audio)
 
@@ -49,7 +49,9 @@ if __name__ == "__main__":
 
     # prop extraction and move classifier
     props = Proposition(dense_paraphrased_transcriptions)
-    moves = Move(dense_paraphrased_transcriptions, utterance_audio, gesture, selected_objects)
+    moves = Move(
+        dense_paraphrased_transcriptions, utterance_audio, gesture, selected_objects
+    )
 
     # common ground tracking
     cgt = CommonGroundTracking(moves, props)
