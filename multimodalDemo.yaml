@@ -1,4 +1,4 @@
-name: multimodalDemo_
+name: multimodalDemo
 channels:
   - pytorch
   - nvidia
