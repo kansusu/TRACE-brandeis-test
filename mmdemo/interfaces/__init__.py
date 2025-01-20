@@ -9,7 +9,7 @@ from typing import Any, Iterable, Sequence
 import numpy as np
 
 from mmdemo.base_interface import BaseInterface
-from mmdemo.interfaces.data import Cone, Handedness, ObjectInfo2D, ObjectInfo3D
+from mmdemo.interfaces.data import Cone, Handedness, ObjectInfo2D, ObjectInfo3D, ParticipantInfo
 
 
 @dataclass
@@ -145,6 +145,16 @@ class SelectedObjectsInterface(BaseInterface):
     """
 
     objects: Sequence[tuple[ObjectInfo2D | ObjectInfo3D, bool]]
+
+@dataclass
+class SelectedParticipantsInterface(BaseInterface):
+    """
+    Which participants are selected by participants (via gaze)
+
+    ParticipantInfo -- [(ParticipantInfo info, selected?), ...]
+    """
+
+    participants: Sequence[tuple[ParticipantInfo, bool]]
 
 
 @dataclass

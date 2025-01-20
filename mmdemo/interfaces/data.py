@@ -44,6 +44,16 @@ class Cone:
     base_radius: float
     vertex_radius: float
 
+@dataclass
+class ParticipantInfo:
+    """
+    nosePoint -- nose point
+    participantId -- the participant id
+    """
+
+    nosePoint: tuple[float, float]
+    participantId: int
+
 
 @dataclass
 class ObjectInfo2D:
