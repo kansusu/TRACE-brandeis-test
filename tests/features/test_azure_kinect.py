@@ -15,7 +15,7 @@ from mmdemo.interfaces import (
 
 @pytest.fixture
 def mkv_path():
-    return r"C:\Users\brady\Desktop\Group_01-master.mkv"
+    return r"C:\Users\Multimodal_Demo\Desktop\Group_01-master.mkv"
 
 
 @final
