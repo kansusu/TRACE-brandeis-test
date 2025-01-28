@@ -36,8 +36,9 @@ if __name__ == "__main__":
     selected_objects = SelectedObjects(objects, gesture)  # pyright: ignore
 
     # transcriptions from microphone
-    audio = MicAudio(device_id=2, speaker_id="group")
-    utterance_audio = VADUtteranceBuilder(audio, delete_input_files=True)
+    audio1 = MicAudio(device_id=1, speaker_id="Participant 1")
+    audio2 = MicAudio(device_id=10, speaker_id="Participant 2")
+    utterance_audio = VADUtteranceBuilder(audio1, audio2, delete_input_files=True)
     transcriptions = WhisperTranscription(utterance_audio)
 
     # which objects are referenced (by gesture) during a transcription
@@ -58,6 +59,7 @@ if __name__ == "__main__":
 
     # create output frame for video
     output_frame = EMNLPFrame(color, gaze, gesture, selected_objects, cgt, calibration)
+    # output_frame = EMNLPFrame(color, gesture, selected_objects, cgt, calibration)
 
     # run demo and show output
     demo = Demo(
