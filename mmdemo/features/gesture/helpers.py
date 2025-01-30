@@ -73,10 +73,6 @@ def fix_body_id(bt):
     bt.bodies.sort(key=lambda body: body["joint_positions"][3][0])
     # change body id according to head position relative to other participants
     for id, body in enumerate(bt.bodies):
-        body["body_id"] = id
+        body["body_id"] = id + 1
     
     return bt
-
-
-
-    
